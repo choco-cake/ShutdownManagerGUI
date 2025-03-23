@@ -1,0 +1,72 @@
+#include "bgt_compat.nvgt"
+#include "speech.nvgt"
+void main() {
+if(!file_exists(DIRECTORY_TEMP+"/nothing.jk")) {
+alert("Hello "+read_environment_variable("username"), "Thanks for trying out this simple and easy to use program. To get a quick help on hotkies press F1. For any suggestions / feature requests, you already know what to do. Have Fun!");
+file f ;
+f.open(DIRECTORY_TEMP+"/nothing.jk", "wb");
+f.close();
+}
+show_window("Shutdown Manager Master [First Public Release]");
+while(true) {
+wait(5);
+if(key_pressed(KEY_ESCAPE) || (key_pressed(KEY_F4) && (key_down(KEY_LMENU) || key_down(KEY_RMENU)))) {
+speak("Exit.");
+exit();
+}
+if(key_pressed(KEY_A)) {
+file f ;
+f.open(DIRECTORY_TEMP+"/smgui.bat", "wb");
+f.write("shutdown -a");
+f.close();
+bool r = run(DIRECTORY_TEMP+"/smgui.bat", "", true, false);
+speak( r == true? "Command sent successfully." : "Could not send the command to system." );
+file_delete(DIRECTORY_TEMP+"/smgui.bat");
+}
+if(key_pressed(KEY_F1)) {
+speak("Help:\r\n[Hotkeys]\r\nS: Shutdown.\r\nR: Restart.\r\nA: Cancel any shutdown / restart requests.\r\nEscape / Alt+F4: Quit the program.");
+}
+if(key_pressed(KEY_R)) {
+string time = input_box("Restart", "Please enter the time (in minutes) after you want to restart your PC.");
+if( time != "" && time.is_digits()){
+double tm = string_to_number(time);
+tm = tm*60 ;
+file f ;
+f.open(DIRECTORY_TEMP+"/smgui.bat", "wb");
+f.write("shutdown -r -f -t "+tm);
+f.close();
+bool r = run(DIRECTORY_TEMP+"/smgui.bat", "", true, false);
+speak( r == true? "Command sent successfully." : "Could not send the command to system." );
+file_delete(DIRECTORY_TEMP+"/smgui.bat");
+}
+}
+/*if(key_pressed(KEY_H)) {
+string time = input_box("Hibernate", "Please enter the time (in minutes) after you want to hibernate your PC.");
+if( time != "" && time.is_digits()){
+double tm = string_to_number(time);
+tm = tm*60 ;
+file f ;
+f.open(DIRECTORY_TEMP+"/smgui.bat", "wb");
+f.write("shutdown -h -f -t "+tm);
+f.close();
+bool r = run(DIRECTORY_TEMP+"/smgui.bat", "", true, false);
+speak( r == true? "Command sent successfully." : "Could not send the command to system." );
+file_delete(DIRECTORY_TEMP+"/smgui.bat");
+}
+}*/
+if(key_pressed(KEY_S)) {
+string time = input_box("Shutdown", "Please enter the time (in minutes) after you want to shut down your PC.");
+if( time != "" && time.is_digits()){
+double tm = string_to_number(time);
+tm = tm*60 ;
+file f ;
+f.open(DIRECTORY_TEMP+"/smgui.bat", "wb");
+f.write("shutdown -s -f -t "+tm);
+f.close();
+bool r = run(DIRECTORY_TEMP+"/smgui.bat", "", true, false);
+speak( r == true? "Command sent successfully." : "Could not send the command to system." );
+file_delete(DIRECTORY_TEMP+"/smgui.bat");
+}
+}
+}
+}
